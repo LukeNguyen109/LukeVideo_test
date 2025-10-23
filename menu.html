@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Menu Chính</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      /* background: radial-gradient(circle at center, #1b0034, #000); */
+        background-image: url("static/anhanhem.jpg"); /* Đường dẫn đến ảnh nền */
+        background-size: cover;       /* Ảnh phủ toàn màn hình */
+        background-position: center;  /* Căn giữa ảnh */
+        background-repeat: no-repeat; /* Không lặp lại */
+        font-family: 'Quicksand', sans-serif;
+        color: white;
+        text-align: center;
+        height: 100vh;
+        margin: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      text-shadow: 0 0 15px #ff66ff;
+      margin-bottom: 30px;
+    }
+
+    button {
+      font-size: 1.3em;
+      padding: 10px 25px;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background-color: #ff66cc;
+      color: white;
+      box-shadow: 0 0 15px #ff99ff;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ff3399;
+      transform: scale(1.1);
+    }
+
+    #message-box {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #ff66ff;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #message-box p {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      color: #ffb3ff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bạn biết hôm nay là ngày gì không?</h1>
+  <div id="menu">
+    <button id="yes">Có 😎</button>
+    <button id="no">Không 😒</button>
+  </div>
+
+  <div id="message-box">
+    <p>M tệ bạc vcl 😤 Chọn "Có" đi đồ ngu 😡</p>
+    <button id="ok">OK 🙄</button>
+  </div>
+
+  <script>
+    const yesBtn = document.getElementById("yes");
+    const noBtn = document.getElementById("no");
+    const okBtn = document.getElementById("ok");
+    const menu = document.getElementById("menu");
+    const messageBox = document.getElementById("message-box");
+
+    yesBtn.addEventListener("click", () => {
+    //   window.location.href = "index.html"; // Nhảy sang giao diện sinh nhật
+      window.location.href = "/birthday";
+    });
+
+    noBtn.addEventListener("click", () => {
+      menu.style.display = "none";
+      messageBox.style.display = "flex";
+    });
+
+    okBtn.addEventListener("click", () => {
+      messageBox.style.display = "none";
+      menu.style.display = "block";
+    });
+  </script>
+</body>
+</html>
