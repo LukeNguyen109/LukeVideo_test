@@ -2,35 +2,164 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Video demo của Luke</title>
+  <title>🎉 Happy Birthday Luke!</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      margin: 0;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #1b0034, #000);
+      font-family: 'Comic Sans MS', cursive;
+      height: 100vh;
       text-align: center;
-      background-color: #f5f5f5;
-      margin-top: 50px;
+      color: white;
     }
-    video {
-      width: 60%;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+
+    h1 {
+      position: absolute;
+      top: 40%;
+      width: 100%;
+      font-size: 4em;
+      text-shadow: 0 0 20px #ff66ff, 0 0 40px #ff99ff;
+      animation: glow 2s ease-in-out infinite alternate;
     }
-    p {
-      font-size: 18px;
-      color: #333;
-      margin-top: 20px;
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #ff33ff; }
+      to { text-shadow: 0 0 30px #ff33cc, 0 0 60px #ff66ff; }
+    }
+
+    /* Bóng bay */
+    .balloon {
+      position: absolute;
+      bottom: -150px;
+      width: 60px;
+      height: 80px;
+      border-radius: 50%;
+      animation: float 8s infinite ease-in;
+    }
+
+    @keyframes float {
+      from { transform: translateY(0) rotate(0deg); opacity: 1; }
+      to { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <h1>🎥 Video thử nghiệm của Luke</h1>
+  <h1>🎂 Happy Birthday un 🎉</h1>
+  <canvas id="fireworks"></canvas>
 
-  <video controls autoplay loop>
-    <source src="video.mp4" type="video/mp4">
-    Trình duyệt của bạn không hỗ trợ video.
-  </video>
+  <audio autoplay loop>
+    <source src="happy_birthday.mp3" type="audio/mpeg">
+  </audio>
 
-  <p>Đây là đoạn video ngắn mô phỏng hoạt động của hệ thống.</p>
+  <script>
+    // ============================
+    // 🎈 Hiệu ứng bóng bay
+    // ============================
+    for (let i = 0; i < 15; i++) {
+      const b = document.createElement("div");
+      b.className = "balloon";
+      b.style.left = Math.random() * 100 + "vw";
+      b.style.animationDuration = (6 + Math.random() * 4) + "s";
+      b.style.background = `hsl(${Math.random() * 360}, 80%, 60%)`;
+      document.body.appendChild(b);
+    }
+
+    // ============================
+    // 🎊 Hiệu ứng confetti
+    // ============================
+    const confettiCanvas = document.createElement('canvas');
+    confettiCanvas.width = window.innerWidth;
+    confettiCanvas.height = window.innerHeight;
+    confettiCanvas.style.position = 'fixed';
+    confettiCanvas.style.top = 0;
+    confettiCanvas.style.left = 0;
+    confettiCanvas.style.pointerEvents = 'none';
+    document.body.appendChild(confettiCanvas);
+    const ctxConfetti = confettiCanvas.getContext('2d');
+
+    const confettis = Array.from({ length: 200 }).map(() => ({
+      x: Math.random() * confettiCanvas.width,
+      y: Math.random() * confettiCanvas.height,
+      r: Math.random() * 6 + 4,
+      c: `hsl(${Math.random() * 360}, 100%, 70%)`,
+      s: Math.random() * 3 + 1
+    }));
+
+    function drawConfetti() {
+      ctxConfetti.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      confettis.forEach(p => {
+        ctxConfetti.beginPath();
+        ctxConfetti.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+        ctxConfetti.fillStyle = p.c;
+        ctxConfetti.fill();
+        p.y += p.s;
+        if (p.y > confettiCanvas.height) p.y = -10;
+      });
+      requestAnimationFrame(drawConfetti);
+    }
+    drawConfetti();
+
+    // ============================
+    // 🎆 Hiệu ứng pháo hoa
+    // ============================
+    const canvas = document.getElementById('fireworks');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    class Firework {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.radius = Math.random() * 3 + 2;
+        this.angle = Math.random() * 2 * Math.PI;
+        this.speed = Math.random() * 6 + 2;
+        this.life = 100;
+      }
+      update() {
+        this.x += Math.cos(this.angle) * this.speed;
+        this.y += Math.sin(this.angle) * this.speed;
+        this.speed *= 0.95;
+        this.life--;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
+    }
+
+    const fireworks = [];
+    function createFirework() {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height / 2;
+      const color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+      for (let i = 0; i < 50; i++) {
+        fireworks.push(new Firework(x, y, color));
+      }
+    }
+
+    function animateFireworks() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.2)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      fireworks.forEach((f, i) => {
+        f.update();
+        f.draw();
+        if (f.life <= 0) fireworks.splice(i, 1);
+      });
+      if (Math.random() < 0.04) createFirework();
+      requestAnimationFrame(animateFireworks);
+    }
+    animateFireworks();
+
+    // Resize canvas khi thay đổi kích thước cửa sổ
+    window.addEventListener('resize', () => {
+      canvas.width = confettiCanvas.width = window.innerWidth;
+      canvas.height = confettiCanvas.height = window.innerHeight;
+    });
+  </script>
 </body>
 </html>
-
